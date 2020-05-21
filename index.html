@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>USA North API</title>
+  </head>
+  <body>
+    
+    <div class='container'>
+        <h1 id='title' >USA North API <span id='version'>V1.0</span></h1>
+        <h2>Introduction</h2>
+        <p>This API was created for the convinience of professional excavators, and is intended to be used only in correspondence with their respective e-ticket accounts. 
+            With the exeption of the token generation, all requests are GETs. The token generation does not create the token, but instead creates the request to create the token. 
+            You will only be notified if theres an issue with the request; you will not be notified if there's an issue in the token creation process.
+            For example: if the account name is mispelled. The request to create a token will be okay, but the token generation will not go through as there's no corresponding account.
+        </p>
+        <p>All examples are written as CURL requests, but can be applied to any language used to consume REST APIs
+        </p>
+        <div class='row' id='first-row'>
+            <div class='col-md-6'>
+                <h3>Token Generation</h3>
+                <p>This request will generate a token for the corresponding user. The token will then be delivered to the user via their account email</p>
+                <p><i>*The token can also be generated in the browser by visiting https://usanorth811.herokuapp.com/tokens/new</i></p>
+                <pre class="prettyprint">
+                    
+curl --request POST \
+    --url https://usanorth811.herokuapp.com/tokens.json \
+    --header 'content-type: application/json' \
+    --data '{
+        "token": {
+            "account”:"your account"
+        }
+    }
+'
+                </pre>
+                
+            </div>
+            <div class="col-md-6">
+                <h5 id='title' style='padding-top: 35px'>
+                    &nbsp;Response
+                </h5>
+                <pre class="prettyprint">
+            
+    if successful, this will return 
+    a 201 status with an empty array
+                                    </pre>
+            </div>
+        </div>
+        <div class='row'>
+                <div class='col-md-6'>
+                    <h3>Get User Tickets</h3>
+                    <p>This request takes two parameters. First is the token. Second is hours as an integer. The hours parameter will pull all
+                    tickets for the user created between the time of the request and the number of hours being searched back. For example,
+                    if you are searching for a ticket created two hours ago, you would need to enter at least a 2 for this field. There’s no
+                    limit to the amount of time that can be searched back, however only tickets created this year are available through this
+                    request.</p>
+                    <p><i>*This request will only output a maximum of 200 tickets at a time.</i></p>
+                    <pre class="prettyprint">
+
+curl --request GET \
+    --url '/tickets?token=UserAccountToken&hours=1'
+                    </pre>
+                </div>
+                <div class="col-md-6">
+                    <h5 id='title' style='padding-top: 35px'>
+                        &nbsp;Response
+                    </h5>
+                    <pre class="prettyprint">
+                        
+{
+  "data": [
+    {
+      "id": "5893202",
+      "type": "ticket",
+      "attributes": {
+        "ticket": "X013401039",
+        "completed": "2020-05-13T10:39:29.137Z",
+        "type": "NEW",
+        "priority": "NORM",
+        "category": "LREQ",
+        "lookup": "POLY",
+        "started": "2020-05-13T10:39:14.137Z",
+        "original_ticket": "X013401039",
+        "original_date": "2020-05-13T10:39:14.000Z",
+        "original_account": "“TestAccount",
+        "original_channel": " ",
+        "replace_by_date": "2020-06-10T00:00:00.000Z",
+        "reference": " ",
+        "account": "“TestAccount",
+        "channel": "WEB",
+        "taken_source": "H5TE INHSE",
+        "taken_version": "1.0.83",
+        "st": "06",
+        "co": "049",
+        "fips": "00682",
+        "map": "06049",
+        "state": "CA",
+        "county": "MODOC",
+        "place": "DAVIS CREEK /U",
+        "inside_outside": "B",
+        "st_from_address": "0",
+        "st_to_address": "0",
+        "street": "COUNTY ROAD 136",
+        "cross1": "BLUE MOUNTAIN LO",
+        "cross2": " ",
+        "digsite_type": "INTERSECTION",
+        "street_side": " ",
+        "intersection_corner": " ",
+        "milepost1_color": " ",
+        "milepost1": " ",
+        "milepost2_color": " ",
+        "milepost2": " ",
+        "buffer": "0.0",
+        "buffer_unit": " ",
+        "st_prefix": " ",
+        "st_name": "COUNTY ROAD 136",
+        "st_type": " ",
+        "st_suffix": " ",
+        "st_recno": 0,
+        "c1_prefix": " ",
+        "c1_name": "BLUE MOUNTAIN LO",
+        "c1_type": " ",
+        "c1_suffix": " ",
+        "c1_recno": 0,
+        "c2_prefix": " ",
+        "c2_name": " ",
+        "c2_type": " ",
+        "c2_suffix": " ",
+        "c2_recno": 0,
+        "expires": "2020-06-10T23:59:59.000Z",
+        "work_date": "2020-05-15T17:01:00.000Z",
+        "response_due": "2020-05-15T17:01:00.000Z",
+        "hours_notice_clock": 55,
+        "hours_notice_business": 26,
+        "work_type": "TEST TEST TEST TEST",
+        "done_for": "TEST",
+        "work_order": " ",
+        "header": " ",
+        "uob": "U",
+        "boring": "NO",
+        "explosives": " ",
+        "premark_method": "WHITE PAINT",
+        "num_lookup_mbrs": 1,
+        "caller_type": "HOME",
+        "industry": " ",
+        "name": "TEST",
+        "address1": "4005 PORT CHICAGO HWY",
+        "address2": " ",
+        "city": "CONCORD",
+        "cstate": "CA",
+        "zip": "94501",
+        "phone": "5555555555",
+        "phone_ext": " ",
+        "caller": "CALEB WOODS",
+        "caller_phone": "5555555555",
+        "caller_phone_ext": " ",
+        "caller_language": "ENGLISH",
+        "contact": "TEST TEST",
+        "contact_phone": "5555555555",
+        "contact_phone_ext": " ",
+        "contact_email": "TEST@usanorth811.org",
+        "contact_cell": "5555555555",
+        "fax": " ",
+        "fax_ext": " ",
+        "cell": "5555555555",
+        "cell_ext": " ",
+        "email": "TEST@usanorth811.org",
+        "best_time": " ",
+        "latitude": " ",
+        "longitude": " ",
+        "extent_top": "41.842812",
+        "extent_left": "-120.845244",
+        "extent_bottom": "41.841714",
+        "extent_right": "-120.846712",
+        "bestfit_y1": "41.841771",
+        "bestfit_x1": "-120.846749",
+        "bestfit_y2": "41.842863",
+        "bestfit_x2": "-120.846668",
+        "bestfit_y3": "41.842755",
+        "bestfit_x3": "-120.845208",
+        "bestfit_y4": "41.841663",
+        "bestfit_x4": "-120.845288",
+        "centroid_y": "41.842263",
+        "centroid_x": "-120.845978",
+        "area_in_miles": "0.004479",
+        "queued": 0,
+        "vacuum": "N",
+        "priority_number": 2,
+        "permit_type": "NO",
+        "permit_num": " ",
+        "remarks_requested": " ",
+        "remarks_type": " ",
+        "work_area_zip_codes": " ",
+        "recording": " ",
+        "meet": false,
+        "premarked": true,
+        "emergency": false,
+        "no_queue": false,
+        "checked_map": true,
+        "grids_from_map": true,
+        "response_required": true,
+        "call_requested": false,
+        "excav_st_walk": false,
+        "night": false,
+        "weekend": false,
+        "eml_confirm": true,
+        "sms_confirm": false,
+        "contact_eml_confirm": true,
+        "contact_sms_confirm": false,
+        "one_year": false,
+        "ruled_members": " ",
+        "caller_gps": "41.844013/-120.849710",
+        "location": "TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST",
+        "remarks": null,
+        "comments": null
+      }
+    },
+    {
+      "id": "5893203",
+      "type": "ticket",
+      "attributes": {
+        "ticket": "X013401040",
+        "completed": "2020-05-13T10:39:29.137Z",
+        "type": "NEW",
+        "priority": "NORM",
+        "category": "LREQ",
+        "lookup": "POLY",
+        "started": "2020-05-13T10:39:14.137Z",
+        "original_ticket": "X013401040",
+        "original_date": "2020-05-13T10:39:14.000Z",
+        "original_account": "“TestAccount",
+        "original_channel": " ",
+        "replace_by_date": "2020-06-10T00:00:00.000Z",
+        "reference": " ",
+        "account": "“TestAccount",
+        "channel": "WEB",
+        "taken_source": "H5TE INHSE",
+        "taken_version": "1.0.83",
+        "st": "06",
+        "co": "049",
+        "fips": "00682",
+        "map": "06049",
+        "state": "CA",
+        "county": "MODOC",
+        "place": "DAVIS CREEK /U",
+        "inside_outside": "B",
+        "st_from_address": "0",
+        "st_to_address": "0",
+        "street": "COUNTY ROAD 136",
+        "cross1": "BLUE MOUNTAIN LO",
+        "cross2": " ",
+        "digsite_type": "INTERSECTION",
+        "street_side": " ",
+        "intersection_corner": " ",
+        "milepost1_color": " ",
+        "milepost1": " ",
+        "milepost2_color": " ",
+        "milepost2": " ",
+        "buffer": "0.0",
+        "buffer_unit": " ",
+        "st_prefix": " ",
+        "st_name": "COUNTY ROAD 136",
+        "st_type": " ",
+        "st_suffix": " ",
+        "st_recno": 0,
+        "c1_prefix": " ",
+        "c1_name": "BLUE MOUNTAIN LO",
+        "c1_type": " ",
+        "c1_suffix": " ",
+        "c1_recno": 0,
+        "c2_prefix": " ",
+        "c2_name": " ",
+        "c2_type": " ",
+        "c2_suffix": " ",
+        "c2_recno": 0,
+        "expires": "2020-06-10T23:59:59.000Z",
+        "work_date": "2020-05-15T17:01:00.000Z",
+        "response_due": "2020-05-15T17:01:00.000Z",
+        "hours_notice_clock": 55,
+        "hours_notice_business": 26,
+        "work_type": "TEST TEST TEST TEST",
+        "done_for": "TEST",
+        "work_order": " ",
+        "header": " ",
+        "uob": "U",
+        "boring": "NO",
+        "explosives": " ",
+        "premark_method": "WHITE PAINT",
+        "num_lookup_mbrs": 1,
+        "caller_type": "HOME",
+        "industry": " ",
+        "name": "TEST",
+        "address1": "4005 PORT CHICAGO HWY",
+        "address2": " ",
+        "city": "CONCORD",
+        "cstate": "CA",
+        "zip": "94501",
+        "phone": "5555555555",
+        "phone_ext": " ",
+        "caller": "CALEB WOODS",
+        "caller_phone": "5555555555",
+        "caller_phone_ext": " ",
+        "caller_language": "ENGLISH",
+        "contact": "TEST TEST",
+        "contact_phone": "5555555555",
+        "contact_phone_ext": " ",
+        "contact_email": "TEST@usanorth811.org",
+        "contact_cell": "5555555555",
+        "fax": " ",
+        "fax_ext": " ",
+        "cell": "5555555555",
+        "cell_ext": " ",
+        "email": "TEST@usanorth811.org",
+        "best_time": " ",
+        "latitude": " ",
+        "longitude": " ",
+        "extent_top": "41.842812",
+        "extent_left": "-120.845244",
+        "extent_bottom": "41.841714",
+        "extent_right": "-120.846712",
+        "bestfit_y1": "41.841771",
+        "bestfit_x1": "-120.846749",
+        "bestfit_y2": "41.842863",
+        "bestfit_x2": "-120.846668",
+        "bestfit_y3": "41.842755",
+        "bestfit_x3": "-120.845208",
+        "bestfit_y4": "41.841663",
+        "bestfit_x4": "-120.845288",
+        "centroid_y": "41.842263",
+        "centroid_x": "-120.845978",
+        "area_in_miles": "0.004479",
+        "queued": 0,
+        "vacuum": "N",
+        "priority_number": 2,
+        "permit_type": "NO",
+        "permit_num": " ",
+        "remarks_requested": " ",
+        "remarks_type": " ",
+        "work_area_zip_codes": " ",
+        "recording": " ",
+        "meet": false,
+        "premarked": true,
+        "emergency": false,
+        "no_queue": false,
+        "checked_map": true,
+        "grids_from_map": true,
+        "response_required": true,
+        "call_requested": false,
+        "excav_st_walk": false,
+        "night": false,
+        "weekend": false,
+        "eml_confirm": true,
+        "sms_confirm": false,
+        "contact_eml_confirm": true,
+        "contact_sms_confirm": false,
+        "one_year": false,
+        "ruled_members": " ",
+        "caller_gps": "41.844013/-120.849710",
+        "location": "TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST",
+        "remarks": null,
+        "comments": null
+      }
+    }
+  ]
+}
+
+                    </pre>
+                </div>
+            </div>
+            <div class='row'>
+                    <div class='col-md-6'>
+                        <h3>Get Ticket Shape Vertices</h3>
+                        <p>This request gives you the detailed work area polygon for a ticket. Whereas the ticket request gives only the best-fit
+                        and centroid, this will give the full list of coordinates. It takes two parameters. The ticket number and the revision
+                        number. You can submit the request with the revision number omitted, however that will return repeated sets of
+                        coordinates - one for each revision - as the coordinates ought not change between revisions.</p>
+                        <p><i>*The work area polygon is fully contained within the best-fit coordinates. Therefore, this request allows you to display the shape
+                        more precisely, but not more accurately.</i></p>
+                        <pre class="prettyprint">
+        
+curl --request GET \
+    --url '/ticket_shape_vertices?ticket=X013401039&revision=00x'
+                        </pre>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 id='title' style='padding-top: 35px'>
+                            &nbsp;Response
+                        </h5>
+                        <pre class="prettyprint">
+                            
+{
+  "data": [
+    {
+      "id": "22025546",
+      "type": "ticket_shape_vertex",
+      "attributes": {
+        "ticket": "X013401039",
+        "revision": "00X",
+        "sequence": 4,
+        "lat1": "41.84269",
+        "long1": "-120.845557",
+        "lat2": "41.842622",
+        "long2": "-120.845446",
+        "lat3": "41.842539",
+        "long3": "-120.845355",
+        "lat4": "41.842444",
+        "long4": "-120.845287",
+        "lat5": "41.842341",
+        "long5": "-120.845245",
+        "lat6": "41.842234",
+        "long6": "-120.845231",
+        "lat7": "0.0",
+        "long7": "0.0",
+        "lat8": "0.0",
+        "long8": "0.0",
+        "lat9": "0.0",
+        "long9": "0.0"
+      }
+    },
+    {
+      "id": "22025545",
+      "type": "ticket_shape_vertex",
+      "attributes": {
+        "ticket": "X013401039",
+        "revision": "00X",
+        "sequence": 3,
+        "lat1": "41.842444",
+        "long1": "-120.846643",
+        "lat2": "41.842539",
+        "long2": "-120.846576",
+        "lat3": "41.842622",
+        "long3": "-120.846484",
+        "lat4": "41.84269",
+        "long4": "-120.846373",
+        "lat5": "41.842741",
+        "long5": "-120.846246",
+        "lat6": "41.842772",
+        "long6": "-120.846108",
+        "lat7": "41.842783",
+        "long7": "-120.845965",
+        "lat8": "41.842772",
+        "long8": "-120.845822",
+        "lat9": "41.842741",
+        "long9": "-120.845684"
+      }
+    }                            
+  ]
+}
+                        </pre>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-6'>
+                        <h3>Get Ticket Responses</h3>
+                        <p>This gives you all the electronic positive responses for a given ticket. It takes one parameter, the ticket number. This
+                        returns all the responses for every revision of the ticket.</p>
+                        
+                        <pre class="prettyprint">
+                
+curl --request GET \
+    --url '/ticket_responses?ticket=X013401039'
+                                        </pre>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 id='title' style='padding-top: 35px'>
+                            &nbsp;Response
+                        </h5>
+                        <pre class="prettyprint">
+
+{
+  "data": [
+    {
+      "id": "8518564",
+      "type": "ticket_response",
+      "attributes": {
+        "member_id": 8,
+        "ticket": "X013401039",
+        "revision": "00X",
+        "response": "001",
+        "responded": "2019-10-30T13:50:16.000Z",
+        "response_by": "tester",
+        "source": "TCP",
+        "sys_id": "W",
+        "url": null,
+        "comments": null
+      }
+    },
+    {
+      "id": "8519182",
+      "type": "ticket_response",
+      "attributes": {
+        "member_id": 2,
+        "ticket": "X013401039",
+        "revision": "00X",
+        "response": "001",
+        "responded": "2019-10-30T14:15:18.000Z",
+        "response_by": "Tester",
+        "source": "REST",
+        "sys_id": "X",
+        "url": null,
+        "comments": null
+      }
+    },
+    {
+      "id": "8575416",
+      "type": "ticket_response",
+      "attributes": {
+        "member_id": 3,
+        "ticket": "X013401039",
+        "revision": "00X",
+        "response": "999",
+        "responded": "2019-10-31T18:08:14.160Z",
+        "response_by": "Late Notice",
+        "source": "SYS",
+        "sys_id": "X",
+        "url": null,
+        "comments": null
+      }
+    }
+  ]
+}
+                        </pre>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-6'>
+                        <h3>Get Member Information</h3>
+                        <p>This request gives you information about the member that has issued an electronic positive response for a ticket. 
+                            It takes one parameter, the member_id, as recieved in the previous request.</p>
+                        <p><i>*The member_id does not correspond to the id of the member, but to a column titled member_id</i></p>
+                        <pre class="prettyprint">
+        
+curl --request GET \
+  --url '/members?member_id=8'
+                        </pre>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 id='title' style='padding-top: 35px'>
+                            &nbsp;Response
+                        </h5>
+                        <pre class="prettyprint">
+
+{
+  "data": [
+    {
+      "id": "5",
+      "type": "member",
+      "attributes": {
+        "member_id": 8,
+        "code": "TST811",
+        "name": "USA NORTH TEST CODE",
+        "description": "811 TEST CODE",
+        "group_code": "811811",
+        "facility_type": "BLUE"
+      }
+    }
+  ]
+}
+                        </pre>
+                    </div>
+                </div>
+    </div>
+        
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+<style>
+    #title{
+        padding-top:25px;
+        padding-bottom:25px;
+    }
+    body{
+        font-family: 'Avenir','helvetica','san-serif';
+        background-color: #EAEAEA;
+        color: #2b2b2b;
+        margin-bottom: 150px;
+    }
+    h2{
+        margin-top: 25px;
+        font-family: 'dovestype';
+        color: #AD2117;
+    }
+    h3 {
+        margin-top: 25px;
+        font-family: 'dovestype';
+        color: #AD2117;
+    }
+    #version {
+        font-family: 'dovestype';
+        color: #AD2117;
+    }
+@font-face {
+    font-family: 'dovestype';
+    src: url("./DovesType-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: 'dovestype';
+    font-weight: bold;
+    src: url("./DovesType-Regular.otf") format("opentype");
+}
+pre  {
+  background-color: #eee;
+  margin: 15px;
+  max-height: 500px;
+  border: none !important;
+  border-radius: 5px;
+  display: block;
+  padding: 20px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1), 
+              0 2px 2px rgba(0,0,0,0.1), 
+              0 4px 4px rgba(0,0,0,0.1), 
+              0 8px 8px rgba(0,0,0,0.1),
+              0 16px 16px rgba(0,0,0,0.1);
+}
+
+
+/* Fade in the pseudo-element with the bigger shadow */
+
+#first-row{
+    margin-top: 25px;
+}
+
+</style>
